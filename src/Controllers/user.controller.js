@@ -5,7 +5,7 @@ import  {uploadOnCloudinary} from '../utils/cloudinary.js'
 import {ApiResponse} from '../utils/ApiResponse.js'
  import jwt from 'jsonwebtoken'
 
-
+// generate jwt token
 const generateAccessandRefreshTokens = async(userId)=>{
      const user = await findById(userId);
    const accessToken =user.generateAccessToken();
@@ -16,6 +16,8 @@ const generateAccessandRefreshTokens = async(userId)=>{
 
      return {refreshToken,accessToken}
 }
+
+// register User
 const registerUser = asyncHandler(async (req, res) => {
   // take details from the user  done
   // check validation done
@@ -91,7 +93,7 @@ const registerUser = asyncHandler(async (req, res) => {
   )
 
 } )
-
+// login user
 const loginUser =  asyncHandler( async (req,res)=>{
     // take data entered by user --done
     //  operate username or email  --done
@@ -151,10 +153,32 @@ status(200)
 
 })
 
+// logout user
 
 const logoutUser = asyncHandler(async(req,res)=>{
     // cookies expire 
-    
+          await User.findById(
+            req.user._id,{
+            $unset :{
+                refreshToken : 1
+            }
+            },
+            {
+                new: true
+            }
+          )
+
+          const options = {
+            httpOnly:true,
+            security : true
+          }
+
+          return res
+          .status(200)
+          .clearCookie("accessToken",accessToken)
+          .clearCookie("refreshToken",refreshToken)
+          .json(new ApiResponse(200,{},"user logged out successfully"))
+
 })
 
  
