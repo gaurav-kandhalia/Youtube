@@ -3,7 +3,7 @@ import { ApiError } from "../utils/apiError.js";
 import { User } from "../models/user.model.js"
 import  {uploadOnCloudinary} from '../utils/cloudinary.js'
 import {ApiResponse} from '../utils/ApiResponse.js'
-import { extractPublicId } from 'cloudinary-build-url'
+// import { extractPublicId } from 'cloudinary-build-url'
  import jwt from 'jsonwebtoken'
 
 // generate jwt token
